@@ -1,7 +1,7 @@
 local requests = require('cmp_ai.requests')
 
 Claude = requests:new(nil)
-BASE_URL = 'https://api.anthropic.com/v1/messages'
+BASE_URL = os.getenv('ANTHROPIC_BASE_URL') or 'https://api.anthropic.com/v1/messages'
 
 function Claude:new(o, params)
   o = o or {}
@@ -11,7 +11,7 @@ function Claude:new(o, params)
     -- Custom params for claude
   })
 
-  self.api_key = os.getenv('CLAUDE_API_KEY')
+  self.api_key = os.getenv('CLAUDE_API_KEY') or os.getenv('ANTHROPIC_AUTH_TOKEN')
   if not self.api_key then
     vim.schedule(function()
       vim.notify('CLAUDE_API_KEY environment variable not set', vim.log.levels.ERROR)
